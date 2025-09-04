@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model DesignOrder {
+  id          Int      @id @default(autoincrement())
+  type        String   // "衣服" 或 "文宣品"
+  brand       String?
+  baseColor   String?
+  pattern     Json?    // {位置: "正面", 大小: "20cm"}
+  fileUrl     String?  // 文宣檔案
+  status      String   // "新建", "進行中", "完成"
+  priority    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  salesId     Int
+  designerId  Int?
+}
