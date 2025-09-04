@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^6.0.1",
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@prisma/client": "^6.15.0",
     "antd": "^5.27.2",
     "dotenv": "^17.2.2",

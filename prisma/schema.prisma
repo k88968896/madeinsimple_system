@@ -14,17 +14,58 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum DesignOrderType {
+  new
+  edit
+}
+
+enum DesignStatus {
+  pending
+  processing
+  review
+  done
+}
+
+enum DesignPriority {
+  high
+  medium
+  low
+}
+
 model DesignOrder {
   id          Int      @id @default(autoincrement())
-  type        String   // "衣服" 或 "文宣品"
+  type        DesignOrderType
   brand       String?
   baseColor   String?
   pattern     Json?    // {位置: "正面", 大小: "20cm"}
   fileUrl     String?  // 文宣檔案
-  status      String   // "新建", "進行中", "完成"
-  priority    Int      @default(0)
+  status      DesignStatus
+  priority    DesignPriority @default(medium)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   salesId     Int
   designerId  Int?
+  isClosed    Boolean  @default(false)
+
+  content     DesignContent?
+}
+
+enum DesignCategory {
+  clothes
+  leaflet
+}
+
+model DesignContent {
+  id             Int             @id @default(autoincrement())
+  designOrderId  Int             @unique
+  category       DesignCategory
+  brand          String?
+  baseColor      String?
+  position       String?
+  size           String?
+  leafletType    String?
+  fileUrl        String?
+  assetNote      String?
+
+  designOrder    DesignOrder     @relation(fields: [designOrderId], references: [id])
 }
